@@ -11,7 +11,8 @@ def calculate_tv_height(viewing_distance, eye_height, tv_size, scenario, fov):
     return {
         "tv_width": tv_width, "tv_height": tv_height,
         "tv_center_height": tv_center_height,
-        "mounting_height": tv_center_height + (tv_height / 2),
+        "mounting_height_bottom": tv_center_height - (tv_height / 2),
+        "mounting_height_top": tv_center_height + (tv_height / 2),
         "optimal_angle_degrees": math.degrees(optimal_angle),
         "eye_height": eye_height,
         "eye_distance": viewing_distance_inches
@@ -73,6 +74,7 @@ def create_person(fig, scenario, person_x, person_y, person_z, eye_height):
         leg_length = 15
         arm_length = 10
 
+        # Torso
         fig.add_trace(go.Mesh3d(
             x=[person_x, person_x, person_x, person_x],
             y=[person_y - 5, person_y + 5, person_y + 5, person_y - 5],
@@ -84,6 +86,7 @@ def create_person(fig, scenario, person_x, person_y, person_z, eye_height):
             opacity=0.8
         ))
 
+        # Head
         fig.add_trace(go.Mesh3d(
             x=[person_x, person_x, person_x, person_x],
             y=[person_y - 3, person_y + 3, person_y + 3, person_y - 3],
@@ -95,9 +98,10 @@ def create_person(fig, scenario, person_x, person_y, person_z, eye_height):
             opacity=0.8
         ))
 
+        # Left Leg
         fig.add_trace(go.Mesh3d(
-            x=[person_x - 2, person_x + 2, person_x + 2, person_x - 2],
-            y=[person_y - 2, person_y - 2, person_y + 2, person_y + 2],
+            x=[person_x - 2, person_x - 2, person_x - 1, person_x - 1],
+            y=[person_y - 2, person_y + 2, person_y + 2, person_y - 2],
             z=[person_z - leg_length, person_z - leg_length, person_z, person_z],
             i=[0, 0],
             j=[1, 2],
@@ -106,9 +110,22 @@ def create_person(fig, scenario, person_x, person_y, person_z, eye_height):
             opacity=0.8
         ))
 
+        # Right Leg
         fig.add_trace(go.Mesh3d(
-            x=[person_x - arm_length, person_x + arm_length, person_x + arm_length, person_x - arm_length],
-            y=[person_y - 1, person_y - 1, person_y + 1, person_y + 1],
+            x=[person_x + 1, person_x + 1, person_x + 2, person_x + 2],
+            y=[person_y - 2, person_y + 2, person_y + 2, person_y - 2],
+            z=[person_z - leg_length, person_z - leg_length, person_z, person_z],
+            i=[0, 0],
+            j=[1, 2],
+            k=[2, 3],
+            color='blue',
+            opacity=0.8
+        ))
+
+        # Left Arm
+        fig.add_trace(go.Mesh3d(
+            x=[person_x - arm_length, person_x - arm_length, person_x - arm_length + 1, person_x - arm_length + 1],
+            y=[person_y - 1, person_y + 1, person_y + 1, person_y - 1],
             z=[person_z + torso_height / 2, person_z + torso_height / 2, person_z + torso_height / 2, person_z + torso_height / 2],
             i=[0, 0],
             j=[1, 2],
@@ -117,6 +134,19 @@ def create_person(fig, scenario, person_x, person_y, person_z, eye_height):
             opacity=0.8
         ))
 
+        # Right Arm
+        fig.add_trace(go.Mesh3d(
+            x=[person_x + arm_length - 1, person_x + arm_length - 1, person_x + arm_length, person_x + arm_length],
+            y=[person_y - 1, person_y + 1, person_y + 1, person_y - 1],
+            z=[person_z + torso_height / 2, person_z + torso_height / 2, person_z + torso_height / 2, person_z + torso_height / 2],
+            i=[0, 0],
+            j=[1, 2],
+            k=[2, 3],
+            color='blue',
+            opacity=0.8
+        ))
+
+        # Eyes
         fig.add_trace(go.Scatter3d(
             x=[person_x], y=[person_y], z=[eye_height],
             mode='markers',
@@ -129,6 +159,7 @@ def create_person(fig, scenario, person_x, person_y, person_z, eye_height):
         leg_length = 15
         arm_length = 10
 
+        # Torso
         fig.add_trace(go.Mesh3d(
             x=[person_x, person_x + torso_length, person_x + torso_length, person_x],
             y=[person_y - 5, person_y - 5, person_y + 5, person_y + 5],
@@ -140,6 +171,7 @@ def create_person(fig, scenario, person_x, person_y, person_z, eye_height):
             opacity=0.8
         ))
 
+        # Head
         fig.add_trace(go.Mesh3d(
             x=[person_x, person_x + head_length, person_x + head_length, person_x],
             y=[person_y - 3, person_y - 3, person_y + 3, person_y + 3],
@@ -151,6 +183,7 @@ def create_person(fig, scenario, person_x, person_y, person_z, eye_height):
             opacity=0.8
         ))
 
+        # Left Leg
         fig.add_trace(go.Mesh3d(
             x=[person_x + torso_length, person_x + torso_length + leg_length, person_x + torso_length + leg_length, person_x + torso_length],
             y=[person_y - 2, person_y - 2, person_y + 2, person_y + 2],
@@ -162,8 +195,21 @@ def create_person(fig, scenario, person_x, person_y, person_z, eye_height):
             opacity=0.8
         ))
 
+        # Right Leg
         fig.add_trace(go.Mesh3d(
-            x=[person_x + torso_length / 2 - arm_length, person_x + torso_length / 2 + arm_length, person_x + torso_length / 2 + arm_length, person_x + torso_length / 2 - arm_length],
+            x=[person_x + torso_length, person_x + torso_length + leg_length, person_x + torso_length + leg_length, person_x + torso_length],
+            y=[person_y - 2, person_y - 2, person_y + 2, person_y + 2],
+            z=[person_z, person_z, person_z, person_z],
+            i=[0],
+            j=[1],
+            k=[2],
+            color='blue',
+            opacity=0.8
+        ))
+
+        # Left Arm
+        fig.add_trace(go.Mesh3d(
+            x=[person_x + torso_length / 2 - arm_length, person_x + torso_length / 2 - arm_length, person_x + torso_length / 2 - arm_length + 1, person_x + torso_length / 2 - arm_length + 1],
             y=[person_y - 1, person_y - 1, person_y + 1, person_y + 1],
             z=[person_z, person_z, person_z, person_z],
             i=[0],
@@ -173,6 +219,19 @@ def create_person(fig, scenario, person_x, person_y, person_z, eye_height):
             opacity=0.8
         ))
 
+        # Right Arm
+        fig.add_trace(go.Mesh3d(
+            x=[person_x + torso_length / 2 + arm_length - 1, person_x + torso_length / 2 + arm_length - 1, person_x + torso_length / 2 + arm_length, person_x + torso_length / 2 + arm_length],
+            y=[person_y - 1, person_y - 1, person_y + 1, person_y + 1],
+            z=[person_z, person_z, person_z, person_z],
+            i=[0],
+            j=[1],
+            k=[2],
+            color='blue',
+            opacity=0.8
+        ))
+
+        # Eyes
         fig.add_trace(go.Scatter3d(
             x=[person_x + head_length / 2], y=[person_y], z=[person_z],
             mode='markers',
@@ -220,7 +279,18 @@ def create_annotations(fig, result, viewing_distance, furniture_depth, eye_heigh
         textposition="top center"
     ))
 
-def create_setup_plot_3d(viewing_distance, eye_height, tv_size, scenario, fov):
+def create_scoreboard(result):
+    scoreboard_text = (
+        f"Optimal Viewing Angle: {result['optimal_angle_degrees']:.1f}°\n"
+        f"TV Center Height: {result['tv_center_height']:.1f}\"\n"
+        f"Mounting Height (bottom): {result['mounting_height_bottom']:.1f}\"\n"
+        f"Mounting Height (top): {result['mounting_height_top']:.1f}\"\n"
+        f"Eye Height: {result['eye_height']:.1f}\"\n"
+        f"Eye Distance: {result['eye_distance']:.1f}\""
+    )
+    return scoreboard_text
+
+def create_setup_plot_3d(viewing_distance, eye_height, tv_size, scenario, fov, show_scoreboard):
     result = calculate_tv_height(viewing_distance, eye_height, tv_size, scenario, fov)
     
     furniture = {
@@ -250,6 +320,26 @@ def create_setup_plot_3d(viewing_distance, eye_height, tv_size, scenario, fov):
     eye_x = furniture_depth/2 if scenario == "living_room" else person_x + 5
     create_viewing_angle(fig, eye_x, viewing_distance * 12, eye_height, result['tv_center_height'])
     create_annotations(fig, result, viewing_distance, furniture_depth, eye_height, furniture_name, furniture_height)
+    
+    # Add scoreboard if show_scoreboard is True
+    if show_scoreboard:
+        scoreboard_text = create_scoreboard(result)
+        
+        fig.add_annotation(
+            x=0.02,
+            y=0.02,
+            xref="paper",
+            yref="paper",
+            text=scoreboard_text.replace("\n", "<br>"),
+            showarrow=False,
+            font=dict(size=10),
+            align="left",
+            bgcolor="rgba(255, 255, 255, 0.9)",  # Increased opacity
+            bordercolor="black",
+            borderwidth=1,
+            borderpad=4,
+            opacity=0.9  # Increased opacity
+        )
     
     fig.update_layout(
         scene = dict(
@@ -286,17 +376,21 @@ def main():
         
         tv_size = st.slider("TV size (inches diagonal)", 32, 85, ideal_tv_size)
 
+        # Show scoreboard checkbox
+        show_scoreboard = st.checkbox("Show Results Scoreboard", value=True)
+
     result = calculate_tv_height(viewing_distance, eye_height, tv_size, scenario, fov)
 
     with col2:
-        fig = create_setup_plot_3d(viewing_distance, eye_height, tv_size, scenario, fov)
+        fig = create_setup_plot_3d(viewing_distance, eye_height, tv_size, scenario, fov, show_scoreboard)
         st.plotly_chart(fig, use_container_width=True)
 
     st.subheader("Results")
     col3, col4, col5, col6, col7 = st.columns(5)
     col3.metric("Optimal Viewing Angle", f"{result['optimal_angle_degrees']:.1f}°")
     col4.metric("TV Center Height", f"{result['tv_center_height']:.1f}\"")
-    col5.metric("Mounting Height (top of TV)", f"{result['mounting_height']:.1f}\"")
+    col5.metric("Mounting Height (bottom)", f"{result['mounting_height_bottom']:.1f}\"")
+    col5.metric("Mounting Height (top)", f"{result['mounting_height_top']:.1f}\"")
     col6.metric("Eye Height", f"{result['eye_height']:.1f}\"")
     col7.metric("Eye Distance from TV", f"{result['eye_distance']:.1f}\"")
 
